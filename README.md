@@ -30,3 +30,5 @@ main.py
 ```
 
 That's all!
+
+![](https://i.imgur.com/cJag7yC.gif)
