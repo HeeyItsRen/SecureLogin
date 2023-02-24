@@ -36,26 +36,33 @@ def register_handler():
     pop.protocol("WM_DELETE_WINDOW", exit_pop)
     def register(username, password):
         global count
-        client.send("Register".encode())
-        print(client.recv(1024).decode()) # Requesting username
-        client.send(username.encode())
-        print(client.recv(1024).decode()) # username received requesting password
-        client.send(password.encode())
-        print(client.recv(1024).decode()) # password received
-
-        msg = client.recv(1024).decode()
-        
-        if msg == "Registration Successful":
-            regiSuccessLabel = customtkinter.CTkLabel(master=frame, text="Registration Sucessful", font=("Roboto", 24))
-            regiSuccessLabel.pack(padx=10, pady=12)
-            root.deiconify()
-            pop.withdraw()
-        elif count < 1:
-            button2 = customtkinter.CTkButton(master=rframe, text="Login?", command=lambda:[root.deiconify(), pop.withdraw()])
-            button2.pack()
-            dupeUsernameLabel = customtkinter.CTkLabel(master=rframe, text="Username already exists!", font=("Roboto", 24))
-            dupeUsernameLabel.pack(padx=10, pady=12)
-        count += 1    
+        msg = ""
+        if username and password is not None:
+            client.send("Register".encode())
+            print(client.recv(1024).decode()) # Requesting username
+            client.send(username.encode())
+            print(client.recv(1024).decode()) # username received requesting password
+            client.send(password.encode())
+            print(client.recv(1024).decode()) # password received
+            msg = client.recv(1024).decode()
+        else:
+            tkinter.messagebox.showinfo("Hospital System v1.0", "Username and Password are Required!")
+            
+        if msg != "":    
+            if msg == "Registration Successful":
+                regiSuccessLabel = customtkinter.CTkLabel(master=frame, text="Registration Sucessful", font=("Roboto", 24))
+                regiSuccessLabel.pack(padx=10, pady=12)
+                tkinter.messagebox.showinfo("Hospital System v1.0", "Registration Sucessful")
+                root.deiconify()
+                pop.withdraw()
+                count = 0
+            elif count < 1:
+                button2 = customtkinter.CTkButton(master=rframe, text="Login?", command=lambda:[root.deiconify(), pop.withdraw()])
+                button2.pack()
+                dupeUsernameLabel = customtkinter.CTkLabel(master=rframe, text="Username already exists!", font=("Roboto", 24))
+                dupeUsernameLabel.pack(padx=10, pady=12)
+                count += 1
+            
             
 def login(username, password):
     msg = ""
@@ -80,8 +87,6 @@ def login(username, password):
             hp.mainloop()
         else:
             tkinter.messagebox.showinfo("Hospital System v1.0", "Username or Password is Incorrect!")
-            # loginFail = customtkinter.CTkLabel(master=root, text="Username or Password is Incorrect!", font=("Roboto", 24))
-            # loginFail.pack(padx=10, pady=12)
         
 def exit_pop():
     pop.destroy()
