@@ -16,7 +16,7 @@ Extract the files
 
 Open up command prompt or your choice of commandline interface (CLI) and type 
 ```
-pip install -m customtkinter
+python -m pip install customtkinter
 ```
 Once CustomTKinter has been installed
 
