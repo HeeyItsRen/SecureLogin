@@ -26,7 +26,7 @@ py server.py
 ```
 Then run the main.py
 ```
-main.py
+py main.py
 ```
 
 That's all!
